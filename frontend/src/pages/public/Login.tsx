@@ -40,14 +40,6 @@ const [password, setPassword] = useState("");
       navigate("/admin/dashboard");
       break;
 
-    case "department":
-      navigate("/department/dashboard");
-      break;
-
-    case "superadmin":
-      navigate("/superadmin/dashboard");
-      break;
-
     default:
       navigate("/");
   }

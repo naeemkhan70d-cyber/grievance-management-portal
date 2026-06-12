@@ -6,6 +6,7 @@ import App from "./App";
 import "./index.css";
 
 import { AuthProvider } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 createRoot(
   document.getElementById("root")!
@@ -14,6 +15,12 @@ createRoot(
     <BrowserRouter>
       <AuthProvider>
         <App />
+          <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

@@ -1,5 +1,11 @@
+import ComplaintForm from "../../components/complaint/ComplaintForm";
+
 const CreateComplaint = () => {
-  return <h1>Create Complaint</h1>;
+  return (
+    <div>
+      <ComplaintForm />
+    </div>
+  );
 };
 
 export default CreateComplaint;
