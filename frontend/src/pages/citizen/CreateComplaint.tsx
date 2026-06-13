@@ -1,4 +1,4 @@
-import ComplaintForm from "../../components/complaint/ComplaintForm";
+import ComplaintForm from "../../components/forms/ComplaintForm";
 
 const CreateComplaint = () => {
   return (

@@ -1,28 +1,40 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+
 import Button from "../../components/common/Button";
+import Select from "../../components/common/Select";
 import StatusBadge from "../../components/complaint/StatusBadge";
 
-const UpdateStatus = () => {
-  const [status, setStatus] = useState(
-    "Pending"
-  );
+import {
+  COMPLAINT_STATUS_OPTIONS,
+} from "../../utils/constants";
 
-  
+import type {
+  ComplaintStatus,
+} from "../../types/complaint";
+
+const UpdateStatus = () => {
+  const [status, setStatus] =
+    useState<ComplaintStatus>(
+      "Pending"
+    );
+
   const complaint = {
     id: "CMP-101",
     subject: "Street Light Fault",
-    department: "Electricity Department",
+    department:
+      "Electricity Department",
     citizen: "Naeem Khan",
     date: "12 Jun 2026",
     description:
       "Street light not working from last 3 days.",
   };
+
   const handleSaveStatus = () => {
-  toast.success(
-    `Complaint marked as ${status}`
-  );
-};
+    toast.success(
+      `Complaint marked as ${status}`
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -99,46 +111,32 @@ const UpdateStatus = () => {
           </p>
 
           <StatusBadge
-            status={status as any}
+            status={status}
           />
         </div>
 
         <div className="mt-6">
-          <label className="mb-2 block text-sm font-medium">
-            Update Status
-          </label>
-
-          <select
+          <Select
+            label="Update Status"
             value={status}
             onChange={(e) =>
-              setStatus(e.target.value)
+              setStatus(
+                e.target
+                  .value as ComplaintStatus
+              )
             }
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
-          >
-            <option value="Pending">
-              Pending
-            </option>
-
-            <option value="In Progress">
-              In Progress
-            </option>
-
-            <option value="Resolved">
-              Resolved
-            </option>
-
-            <option value="Rejected">
-              Rejected
-            </option>
-          </select>
+            options={
+              COMPLAINT_STATUS_OPTIONS
+            }
+          />
         </div>
 
         <div className="mt-6">
-        <Button
-  onClick={handleSaveStatus}
->
-  Save Status
-</Button>
+          <Button
+            onClick={handleSaveStatus}
+          >
+            Save Status
+          </Button>
         </div>
       </div>
     </div>

@@ -1,14 +1,22 @@
 import { useState } from "react";
 
-import ComplaintTable from "../../components/complaint/ComplaintTable";
-import SearchInput from "../../components/common/SearchInput";
+import DataTable from "../../components/common/DataTable";
+import PageHeader from "../../components/common/PageHeader";
+import StatusBadge from "../../components/complaint/StatusBadge";
+
 import { getAssignedComplaints } from "../../services/complaintService";
+
 import useSearch from "../../hooks/useSearch";
 
+import type { Complaint } from "../../types/complaint";
+import type { TableColumn } from "../../types/table";
 
 const AssignedComplaints = () => {
-  const complaints = getAssignedComplaints();
-  const [search, setSearch] = useState("");
+  const complaints =
+    getAssignedComplaints();
+
+  const [search, setSearch] =
+    useState("");
 
   const filteredComplaints =
     useSearch(
@@ -21,24 +29,53 @@ const AssignedComplaints = () => {
       ]
     );
 
+  const columns: TableColumn<Complaint>[] =
+    [
+      {
+        header: "ID",
+        accessor: "id",
+      },
+      {
+        header: "Subject",
+        accessor: "subject",
+      },
+      {
+        header: "Department",
+        accessor: "department",
+      },
+      {
+        header: "Status",
+        render: (
+          complaint
+        ) => (
+          <StatusBadge
+            status={
+              complaint.status
+            }
+          />
+        ),
+      },
+      {
+        header: "Date",
+        accessor: "date",
+      },
+    ];
+
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">
-          Assigned Complaints
-        </h1>
+      <PageHeader
+        title="Assigned Complaints"
+        search={search}
+        onSearch={setSearch}
+        searchPlaceholder="Search complaints..."
+      />
 
-        <SearchInput
-          value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-          placeholder="Search complaints..."
-        />
-      </div>
-
-      <ComplaintTable
-        complaints={filteredComplaints}
+      <DataTable
+        data={
+          filteredComplaints
+        }
+        columns={columns}
+        emptyMessage="No complaints found"
       />
     </div>
   );

@@ -1,11 +1,15 @@
 import { useState } from "react";
 
-import ComplaintTable from "../../components/complaint/ComplaintTable";
+import PageHeader from "../../components/common/PageHeader";
+import DataTable from "../../components/common/DataTable";
+import StatusBadge from "../../components/complaint/StatusBadge";
 
 import { getAllComplaints } from "../../services/complaintService";
 
 import useSearch from "../../hooks/useSearch";
-import PageHeader from "../../components/common/PageHeader";
+
+import type { Complaint } from "../../types/complaint";
+import type { TableColumn } from "../../types/table";
 
 const Complaints = () => {
   const complaints =
@@ -18,8 +22,44 @@ const Complaints = () => {
     useSearch(
       complaints,
       search,
-      ["id", "subject", "department"]
+      [
+        "id",
+        "subject",
+        "department",
+      ]
     );
+
+  const columns: TableColumn<Complaint>[] =
+    [
+      {
+        header: "ID",
+        accessor: "id",
+      },
+      {
+        header: "Subject",
+        accessor: "subject",
+      },
+      {
+        header: "Department",
+        accessor: "department",
+      },
+      {
+        header: "Status",
+        render: (
+          complaint
+        ) => (
+          <StatusBadge
+            status={
+              complaint.status
+            }
+          />
+        ),
+      },
+      {
+        header: "Date",
+        accessor: "date",
+      },
+    ];
 
   return (
     <div>
@@ -30,8 +70,12 @@ const Complaints = () => {
         searchPlaceholder="Search complaints..."
       />
 
-      <ComplaintTable
-        complaints={filteredComplaints}
+      <DataTable
+        data={
+          filteredComplaints
+        }
+        columns={columns}
+        emptyMessage="No complaints found"
       />
     </div>
   );

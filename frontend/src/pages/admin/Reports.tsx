@@ -50,8 +50,8 @@ const Reports = () => {
       </div>
 
       <ComplaintChart
-  title="System Complaint Analytics"
-/>
+        title="System Complaint Analytics"
+      />
     </div>
   );
 };

@@ -31,3 +31,39 @@ export const getDepartments =
   (): Department[] => {
     return departments;
   };
+
+export const addDepartment = (
+  department: Department
+) => {
+  departments.push(department);
+};
+
+export const updateDepartment = (
+  updatedDepartment: Department
+) => {
+  const index =
+    departments.findIndex(
+      (department) =>
+        department.id ===
+        updatedDepartment.id
+    );
+
+  if (index !== -1) {
+    departments[index] =
+      updatedDepartment;
+  }
+};
+
+export const deleteDepartment = (
+  id: string
+) => {
+  const index =
+    departments.findIndex(
+      (department) =>
+        department.id === id
+    );
+
+  if (index !== -1) {
+    departments.splice(index, 1);
+  }
+};

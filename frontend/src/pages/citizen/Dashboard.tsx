@@ -1,41 +1,3 @@
-// import StatsCard from "../../components/dashboard/StatsCard";
-// import RecentComplaints from "../../components/dashboard/RecentComplaints";
-// import ComplaintChart from "../../components/dashboard/ComplaintChart";
-// import {
-//   getCitizenDashboardStats,
-//   getRecentCitizenComplaints,
-// } from "../../services/dashboardService";
-
-// const Dashboard = () => {
-//   const stats =
-//     getCitizenDashboardStats();
-
-//   const recentComplaints =
-//     getRecentCitizenComplaints();
-
-//   return (
-//     <div className="space-y-6">
-//       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-//         {stats.map((item) => (
-//           <StatsCard
-//             key={item.title}
-//             title={item.title}
-//             value={item.value}
-//              icon={item.icon}
-//           />
-//         ))}
-//       </div>
-//  <ComplaintChart />
-//       <RecentComplaints
-//         complaints={recentComplaints}
-//       />
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
-
 import StatsCard from "../../components/dashboard/StatsCard";
 import RecentComplaints from "../../components/dashboard/RecentComplaints";
 import ComplaintChart from "../../components/dashboard/ComplaintChart";
@@ -46,11 +8,9 @@ import {
 } from "../../services/dashboardService";
 
 const Dashboard = () => {
-  const stats =
-    getCitizenDashboardStats();
+  const stats = getCitizenDashboardStats();
 
-  const recentComplaints =
-    getRecentCitizenComplaints();
+  const recentComplaints = getRecentCitizenComplaints();
 
   return (
     <div className="space-y-6">
@@ -64,7 +24,7 @@ const Dashboard = () => {
           />
         ))}
       </div>
-         <ComplaintChart
+      <ComplaintChart
         title="My Complaint Analytics"
       />
       <RecentComplaints
@@ -72,7 +32,7 @@ const Dashboard = () => {
         title="My Recent Activity"
       />
 
-     
+
     </div>
   );
 };

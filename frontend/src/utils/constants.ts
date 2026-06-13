@@ -29,20 +29,19 @@ export const DEMO_USERS = [
   {
     email: "citizen@gmp.com",
     password: "123456",
-    role: "citizen",
+    role: USER_ROLES.CITIZEN,
   },
   {
     email: "officer@gmp.com",
     password: "123456",
-    role: "officer",
+    role: USER_ROLES.OFFICER,
   },
   {
     email: "admin@gmp.com",
     password: "123456",
-    role: "admin",
+    role: USER_ROLES.ADMIN,
   },
 ] as const;
-
 
 export const SIDEBAR_MENUS = {
   citizen: [
@@ -62,65 +61,131 @@ export const SIDEBAR_MENUS = {
       icon: ClipboardList,
     },
     {
-  label: "Complaint Details",
-  path: "/citizen/complaint-details",
-  icon: FileText,
-},
-    {
       label: "Profile",
       path: "/citizen/profile",
       icon: User,
     },
   ],
 
- officer: [
-  {
-    label: "Dashboard",
-    path: "/officer/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Assigned Complaints",
-    path: "/officer/assigned-complaints",
-    icon: ClipboardList,
-  },
-  {
-    label: "Update Status",
-    path: "/officer/update-status",
-    icon: FileText,
-  },
-  {
-    label: "Profile",
-    path: "/officer/profile",
-    icon: User,
-  },
-],
+  officer: [
+    {
+      label: "Dashboard",
+      path: "/officer/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      label: "Assigned Complaints",
+      path: "/officer/assigned-complaints",
+      icon: ClipboardList,
+    },
+    {
+      label: "Update Status",
+      path: "/officer/update-status",
+      icon: FileText,
+    },
+    {
+      label: "Profile",
+      path: "/officer/profile",
+      icon: User,
+    },
+  ],
 
- admin: [
+  admin: [
+    {
+      label: "Dashboard",
+      path: "/admin/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      label: "Users",
+      path: "/admin/users",
+      icon: Users,
+    },
+    {
+      label: "Departments",
+      path: "/admin/departments",
+      icon: Building2,
+    },
+    {
+      label: "Complaints",
+      path: "/admin/complaints",
+      icon: ClipboardList,
+    },
+    {
+      label: "Reports",
+      path: "/admin/reports",
+      icon: BarChart3,
+    },
+  ],
+} as const;
+
+export const USER_ROLE_OPTIONS = [
   {
-    label: "Dashboard",
-    path: "/admin/dashboard",
-    icon: LayoutDashboard,
+    label: "Citizen",
+    value: USER_ROLES.CITIZEN,
   },
   {
-    label: "Users",
-    path: "/admin/users",
-    icon: Users,
+    label: "Officer",
+    value: USER_ROLES.OFFICER,
   },
   {
-    label: "Departments",
-    path: "/admin/departments",
-    icon: Building2,
+    label: "Admin",
+    value: USER_ROLES.ADMIN,
+  },
+] as const;
+
+export const DEPARTMENT_OPTIONS = [
+  {
+    label: "Public Works Department",
+    value: "PWD",
   },
   {
-    label: "Complaints",
-    path: "/admin/complaints",
-    icon: ClipboardList,
+    label: "Water Department",
+    value: "Water Department",
   },
   {
-    label: "Reports",
-    path: "/admin/reports",
-    icon: BarChart3,
+    label: "Electricity Department",
+    value: "Electricity Department",
   },
-],
+  {
+    label: "Municipal Corporation",
+    value: "Municipal Corporation",
+  },
+] as const;
+
+export const COMPLAINT_STATUS_OPTIONS = [
+  {
+    label: "Pending",
+    value: "Pending",
+  },
+  {
+    label: "In Progress",
+    value: "In Progress",
+  },
+  {
+    label: "Resolved",
+    value: "Resolved",
+  },
+  {
+    label: "Rejected",
+    value: "Rejected",
+  },
+] as const;
+
+export const PAGE_TITLES = {
+  USERS: "Users",
+  DEPARTMENTS: "Departments",
+  COMPLAINTS: "Complaints",
+  MY_COMPLAINTS: "My Complaints",
+  ASSIGNED_COMPLAINTS:
+    "Assigned Complaints",
+  PROFILE: "Profile",
+} as const;
+
+export const EMPTY_MESSAGES = {
+  USERS: "No users found",
+  DEPARTMENTS:
+    "No departments found",
+  COMPLAINTS:
+    "No complaints found",
 } as const;

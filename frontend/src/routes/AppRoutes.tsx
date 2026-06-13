@@ -196,9 +196,9 @@ const AppRoutes = () => {
                 }
               />
               <Route
-  path="profile"
-  element={<OfficerProfile />}
-/>
+                path="profile"
+                element={<OfficerProfile />}
+              />
 
             </Route>
           </Route>

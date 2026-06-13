@@ -1,23 +1,51 @@
 import { useState } from "react";
 
-import ComplaintTable from "../../components/complaint/ComplaintTable";
-import ComplaintCard from "../../components/complaint/ComplaintCard";
+import DataTable from "../../components/common/DataTable";
+import PageHeader from "../../components/common/PageHeader";
 import Modal from "../../components/common/Modal";
-import SearchInput from "../../components/common/SearchInput";
+
+import ComplaintCard from "../../components/complaint/ComplaintCard";
+import StatusBadge from "../../components/complaint/StatusBadge";
 
 import { getCitizenComplaints } from "../../services/complaintService";
 
-
-
-import type { Complaint } from "../../types/complaint";
 import useSearch from "../../hooks/useSearch";
 
+import type { Complaint } from "../../types/complaint";
+import type { TableColumn } from "../../types/table";
+
 const MyComplaints = () => {
-  const complaints = getCitizenComplaints();
+  const complaints =
+    getCitizenComplaints();
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] =
+    useState("");
 
+  const [
+    selectedComplaint,
+    setSelectedComplaint,
+  ] = useState<Complaint | null>(
+    null
+  );
 
+  const [isModalOpen, setIsModalOpen] =
+    useState(false);
+
+  const handleViewComplaint = (
+    complaint: Complaint
+  ) => {
+    setSelectedComplaint(
+      complaint
+    );
+
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+
+    setSelectedComplaint(null);
+  };
 
   const filteredComplaints =
     useSearch(
@@ -30,56 +58,92 @@ const MyComplaints = () => {
       ]
     );
 
-  const [selectedComplaint, setSelectedComplaint] =
-    useState<Complaint | null>(null);
-
-  const [isModalOpen, setIsModalOpen] =
-    useState(false);
-
-  const handleViewComplaint = (
-    complaint: Complaint
-  ) => {
-    setSelectedComplaint(complaint);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedComplaint(null);
-  };
+  const columns: TableColumn<Complaint>[] =
+    [
+      {
+        header: "ID",
+        accessor: "id",
+      },
+      {
+        header: "Subject",
+        accessor: "subject",
+      },
+      {
+        header: "Department",
+        accessor: "department",
+      },
+      {
+        header: "Status",
+        render: (
+          complaint
+        ) => (
+          <StatusBadge
+            status={
+              complaint.status
+            }
+          />
+        ),
+      },
+      {
+        header: "Date",
+        accessor: "date",
+      },
+      {
+        header: "Action",
+        render: (
+          complaint
+        ) => (
+          <button
+            onClick={() =>
+              handleViewComplaint(
+                complaint
+              )
+            }
+            className="
+              rounded-lg
+              bg-blue-50
+              px-3
+              py-2
+              text-blue-600
+              transition-all
+              hover:bg-blue-100
+            "
+          >
+            View
+          </button>
+        ),
+      },
+    ];
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">
-          My Complaints
-        </h1>
+      <PageHeader
+        title="My Complaints"
+        search={search}
+        onSearch={setSearch}
+        searchPlaceholder="Search complaints..."
+      />
 
-        <SearchInput
-          value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-          placeholder="Search complaints..."
-        />
-      </div>
-
-      <ComplaintTable
-        complaints={filteredComplaints}
-        onView={handleViewComplaint}
-        selectedComplaintId={
-          selectedComplaint?.id
+      <DataTable
+        data={
+          filteredComplaints
         }
+        columns={columns}
+        emptyMessage="No complaints found"
       />
 
       <Modal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        onClose={
+          handleCloseModal
+        }
         title="Complaint Details"
       >
         {selectedComplaint && (
           <ComplaintCard
-            complaint={selectedComplaint}
+            complaint={
+              selectedComplaint
+            }
           />
         )}
       </Modal>

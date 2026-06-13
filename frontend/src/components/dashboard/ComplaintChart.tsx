@@ -40,9 +40,9 @@ const ComplaintChart = ({
         {title}
       </h2>
 
-      <div className="h-[350px]">
+    <div className="h-[350px] min-w-0">
         <ResponsiveContainer
-          width="100%"
+          width="99%"
           height="100%"
         >
           <BarChart data={data}>

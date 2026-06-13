@@ -1,10 +1,22 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 import Input from "../common/Input";
 import Button from "../common/Button";
+import Select from "../common/Select";
+import { USER_ROLE_OPTIONS } from "../../utils/constants";
 
-import type { User, UserRole } from "../../types/user";
+import {
+  VALIDATION_MESSAGES,
+  validateRequired,
+  validateMinLength,
+  isValidEmail,
+} from "../../utils/validations";
 
+import type {
+  User,
+  UserRole,
+} from "../../types/user";
 interface UserFormProps {
   initialData?: User | null;
   onSubmit: (user: Omit<User, "id">) => void;
@@ -27,18 +39,45 @@ const UserForm = ({
       initialData?.role || "citizen"
     );
 
-  const handleSubmit = (
-    e: React.FormEvent
-  ) => {
-    e.preventDefault();
+const handleSubmit = (
+  e: React.FormEvent
+) => {
+  e.preventDefault();
 
-    onSubmit({
-      name,
-      email,
-      role,
-    });
-  };
+  if (!validateRequired(name)) {
+    toast.error(
+      VALIDATION_MESSAGES.required(
+        "Name"
+      )
+    );
+    return;
+  }
 
+  if (
+    !validateMinLength(name, 3)
+  ) {
+    toast.error(
+      VALIDATION_MESSAGES.minLength(
+        "Name",
+        3
+      )
+    );
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    toast.error(
+      VALIDATION_MESSAGES.invalidEmail
+    );
+    return;
+  }
+
+  onSubmit({
+    name,
+    email,
+    role,
+  });
+};
   return (
     <form
       onSubmit={handleSubmit}
@@ -66,32 +105,23 @@ const UserForm = ({
           Role
         </label>
 
-        <select
-          value={role}
-          onChange={(e) =>
-            setRole(
-              e.target.value as UserRole
-            )
-          }
-          className="w-full rounded-lg border border-slate-300 px-4 py-3"
-        >
-          <option value="citizen">
-            Citizen
-          </option>
-
-          <option value="officer">
-            Officer
-          </option>
-
-          <option value="admin">
-            Admin
-          </option>
-        </select>
+ <Select
+  label="Role"
+  value={role}
+  onChange={(e) =>
+    setRole(
+      e.target.value as UserRole
+    )
+  }
+  options={USER_ROLE_OPTIONS}
+/>
       </div>
 
       <Button type="submit">
-        Save User
-      </Button>
+  {initialData
+    ? "Update User"
+    : "Create User"}
+</Button>
     </form>
   );
 };
