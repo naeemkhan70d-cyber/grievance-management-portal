@@ -18,6 +18,10 @@ const Login = lazy(
   () => import("../pages/public/Login")
 );
 
+const Signup = lazy(
+  () => import("../pages/public/Signup")
+);
+
 const NotFound = lazy(
   () => import("../pages/public/NotFound")
 );
@@ -108,7 +112,11 @@ const AppRoutes = () => {
           path="/"
           element={<Login />}
         />
-
+        
+<Route
+  path="/signup"
+  element={<Signup />}
+/>
         <Route
           element={<ProtectedRoute />}
         >

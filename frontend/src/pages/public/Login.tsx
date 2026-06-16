@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
@@ -88,6 +88,8 @@ const [password, setPassword] = useState("");
           <Button fullWidth  onClick={handleLogin}>
             {BUTTON_TEXT.LOGIN}
           </Button>
+          <p className="text-center text-sm text-slate-300"> Don't have an account?{" "} 
+            <Link to="/signup" className="font-medium text-blue-400 hover:text-blue-300" > Create Account </Link> </p>
         </div>
 
         <div className="mt-6 border-t border-white/10 pt-4">
