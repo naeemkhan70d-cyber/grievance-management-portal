@@ -1,26 +1,39 @@
 interface StatusBadgeProps {
   status:
-    | "Pending"
-    | "In Progress"
-    | "Resolved"
-    | "Rejected";
+    | "pending"
+    | "assigned"
+    | "in-progress"
+    | "resolved"
+    | "closed";
 }
 
 const StatusBadge = ({
   status,
 }: StatusBadgeProps) => {
   const statusStyles = {
-    Pending:
+    pending:
       "bg-yellow-100 text-yellow-700",
 
-    "In Progress":
+    assigned:
       "bg-blue-100 text-blue-700",
 
-    Resolved:
+    "in-progress":
+      "bg-indigo-100 text-indigo-700",
+
+    resolved:
       "bg-green-100 text-green-700",
 
-    Rejected:
-      "bg-red-100 text-red-700",
+    closed:
+      "bg-slate-100 text-slate-700",
+  };
+
+  const statusLabel = {
+    pending: "Pending",
+    assigned: "Assigned",
+    "in-progress":
+      "In Progress",
+    resolved: "Resolved",
+    closed: "Closed",
   };
 
   return (
@@ -35,7 +48,7 @@ const StatusBadge = ({
         ${statusStyles[status]}
       `}
     >
-      {status}
+      {statusLabel[status]}
     </span>
   );
 };

@@ -1,15 +1,36 @@
 export type ComplaintStatus =
-  | "Pending"
-  | "In Progress"
-  | "Resolved"
-  | "Rejected";
+  | "pending"
+  | "assigned"
+  | "in-progress"
+  | "resolved"
+  | "closed";
 
 export interface Complaint {
   id: string;
-  subject: string;
+
+  title: string;
+
   description: string;
-  department: string;
-  citizenName: string;
+
+  category: string;
+
   status: ComplaintStatus;
-  date: string;
+
+  createdAt: string;
+
+  assignedOfficer?: {
+    _id?: string;
+    name: string;
+    email: string;
+  };
+
+  citizen?: {
+    _id?: string;
+    name: string;
+    email: string;
+  };
+
+  resolutionNote?: string;
+
+  resolvedAt?: string;
 }

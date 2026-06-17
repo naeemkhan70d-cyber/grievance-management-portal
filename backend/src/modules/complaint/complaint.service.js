@@ -156,10 +156,69 @@ const submitFeedbackService =
     return complaint;
   };
 
+  const getCitizenDashboardService =
+  async (citizenId) => {
+
+    const totalComplaints =
+      await Complaint.countDocuments({
+        citizenId,
+      });
+
+    const pending =
+      await Complaint.countDocuments({
+        citizenId,
+        status: "pending",
+      });
+
+    const assigned =
+      await Complaint.countDocuments({
+        citizenId,
+        status: "assigned",
+      });
+
+    const inProgress =
+      await Complaint.countDocuments({
+        citizenId,
+        status: "in-progress",
+      });
+
+    const resolved =
+      await Complaint.countDocuments({
+        citizenId,
+        status: "resolved",
+      });
+
+    const closed =
+      await Complaint.countDocuments({
+        citizenId,
+        status: "closed",
+      });
+
+    const recentComplaints =
+      await Complaint.find({
+        citizenId,
+      })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(5);
+
+    return {
+      totalComplaints,
+      pending,
+      assigned,
+      inProgress,
+      resolved,
+      closed,
+      recentComplaints,
+    };
+  };
+
 module.exports = {
   createComplaintService,
   getMyComplaintsService,
   getComplaintByIdService,
   submitFeedbackService,
   closeComplaintService,
+  getCitizenDashboardService,
 };

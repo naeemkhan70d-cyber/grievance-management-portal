@@ -82,8 +82,34 @@ const resolveComplaint =
     }
   };
 
+  const {
+  getOfficerDashboardService,
+} = require("./officer.service");
+
+const getOfficerDashboard =
+  async (req, res) => {
+    try {
+      const data =
+        await getOfficerDashboardService(
+          req.user.userId
+        );
+
+      res.status(200).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message:
+          error.message,
+      });
+    }
+  };
+
 module.exports = {
   getAssignedComplaints,
   startComplaint,
   resolveComplaint,
+  getOfficerDashboard,
 };

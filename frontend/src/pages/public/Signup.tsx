@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
+import { registerUser } from "../../services/authService";
 
 const Signup = () => {
   const [name, setName] = useState("");
-
+const navigate = useNavigate();
   const [email, setEmail] = useState("");
 
   const [password, setPassword] =
@@ -17,22 +18,41 @@ const Signup = () => {
     setConfirmPassword,
   ] = useState("");
 
-  const handleSignup = () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
+const handleSignup = async () => {
+  try {
+    if (
+      password !== confirmPassword
+    ) {
+      alert(
+        "Passwords do not match"
+      );
       return;
     }
 
-    console.log({
-      name,
-      email,
-      password,
-    });
+    const response =
+      await registerUser({
+        name,
+        email,
+        password,
+      });
 
     alert(
-      "Account request submitted successfully"
+      response.message
     );
-  };
+
+    navigate("/");
+  } catch (error: any) {
+  console.log("REGISTER ERROR:", error);
+  console.log("RESPONSE:", error?.response);
+  console.log("DATA:", error?.response?.data);
+
+  alert(
+    error?.response?.data?.message ||
+    error?.message ||
+    "Registration failed"
+  );
+}
+};
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 px-4 py-4">

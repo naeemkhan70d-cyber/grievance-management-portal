@@ -78,11 +78,11 @@ export const SIDEBAR_MENUS = {
       path: "/officer/assigned-complaints",
       icon: ClipboardList,
     },
-    {
-      label: "Update Status",
-      path: "/officer/update-status",
-      icon: FileText,
-    },
+    // {
+    //   label: "Update Status",
+    //   path: "/officer/update-status",
+    //   icon: FileText,
+    // },
     {
       label: "Profile",
       path: "/officer/profile",

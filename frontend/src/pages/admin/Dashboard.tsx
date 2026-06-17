@@ -1,16 +1,57 @@
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import toast from "react-hot-toast";
+
 import StatsCard from "../../components/dashboard/StatsCard";
 import RecentComplaints from "../../components/dashboard/RecentComplaints";
 import ComplaintChart from "../../components/dashboard/ComplaintChart";
 
+import type {
+  DashboardStat,
+  RecentComplaint,
+} from "../../types/dashboard";
+
 import {
-  getAdminDashboardStats,
-  getRecentAdminComplaints,
+  getAdminDashboard,
 } from "../../services/dashboardService";
 
 const Dashboard = () => {
-  const stats =getAdminDashboardStats();
+  const [stats, setStats] =
+    useState<DashboardStat[]>([]);
 
-  const recentComplaints = getRecentAdminComplaints();
+  const [
+    recentComplaints,
+    setRecentComplaints,
+  ] = useState<RecentComplaint[]>([]);
+
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard =
+    async () => {
+      try {
+        const data =
+          await getAdminDashboard();
+
+        setStats(
+          data.stats
+        );
+
+        setRecentComplaints(
+          data.recentComplaints
+        );
+      } catch (error) {
+        console.error(error);
+
+        toast.error(
+          "Failed to load dashboard"
+        );
+      }
+    };
 
   return (
     <div className="space-y-6">
@@ -30,7 +71,9 @@ const Dashboard = () => {
       />
 
       <RecentComplaints
-        complaints={recentComplaints}
+        complaints={
+          recentComplaints
+        }
         title="System Activity Feed"
       />
     </div>

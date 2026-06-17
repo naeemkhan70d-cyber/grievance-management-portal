@@ -7,5 +7,12 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: UserRole;
+  role?: UserRole;
+  status?: "pending" | "approved";
+}
+
+export interface Officer {
+  id: string;
+  name: string;
+  email: string;
 }

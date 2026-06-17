@@ -13,7 +13,7 @@ const ComplaintCard = ({
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h3 className="text-xl font-semibold text-slate-800">
-          {complaint.subject}
+          {complaint.title}
         </h3>
 
         <StatusBadge
@@ -34,23 +34,49 @@ const ComplaintCard = ({
 
         <div>
           <p className="text-sm text-slate-500">
-            Department
+            Category
           </p>
 
           <p className="mt-1 font-medium">
-            {complaint.department}
+            {complaint.category}
           </p>
         </div>
 
         <div>
           <p className="text-sm text-slate-500">
-            Submitted Date
+            Created At
           </p>
 
           <p className="mt-1 font-medium">
-            {complaint.date}
+            {new Date(
+              complaint.createdAt
+            ).toLocaleString()}
           </p>
         </div>
+
+        {complaint.assignedOfficer && (
+          <div>
+            <p className="text-sm text-slate-500">
+              Assigned Officer
+            </p>
+
+            <p className="mt-1 font-medium">
+              {
+                complaint
+                  .assignedOfficer
+                  .name
+              }
+            </p>
+
+            <p className="text-sm text-slate-500">
+              {
+                complaint
+                  .assignedOfficer
+                  .email
+              }
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="mt-6">
@@ -58,12 +84,36 @@ const ComplaintCard = ({
           Description
         </p>
 
-        <p className="mt-2 leading-7 text-slate-700">
-          This is a sample complaint description.
-          When backend is connected, actual
-          complaint description will appear here.
-        </p>
+        <div className="mt-2 rounded-xl bg-slate-50 p-4">
+          {complaint.description}
+        </div>
       </div>
+
+      {complaint.resolutionNote && (
+        <div className="mt-6">
+          <p className="text-sm text-slate-500">
+            Resolution Note
+          </p>
+
+          <div className="mt-2 rounded-xl border border-green-200 bg-green-50 p-4">
+            {complaint.resolutionNote}
+          </div>
+        </div>
+      )}
+
+      {complaint.resolvedAt && (
+        <div className="mt-6">
+          <p className="text-sm text-slate-500">
+            Resolved At
+          </p>
+
+          <p className="mt-1 font-medium">
+            {new Date(
+              complaint.resolvedAt
+            ).toLocaleString()}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

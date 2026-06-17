@@ -39,12 +39,21 @@ const user = await User.create({
 };
   };
 
-  const getPendingUsersService =
+ const getPendingUsersService =
   async () => {
-    return await User.find({
-      status: "pending",
-    }).select(
-      "-password"
+    const users =
+      await User.find({
+        status: "pending",
+      }).select("-password");
+
+    return users.map(
+      (user) => ({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        status: user.status,
+        role: user.role,
+      })
     );
   };
 

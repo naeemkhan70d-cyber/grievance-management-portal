@@ -90,8 +90,51 @@ const resolveComplaintService =
     return complaint;
   };
 
+const getOfficerDashboardService =
+  async (officerId) => {
+    const assigned =
+      await Complaint.countDocuments({
+        assignedOfficer: officerId,
+      });
+
+    const pending =
+      await Complaint.countDocuments({
+        assignedOfficer: officerId,
+        status: "assigned",
+      });
+
+    const inProgress =
+      await Complaint.countDocuments({
+        assignedOfficer: officerId,
+        status: "in-progress",
+      });
+
+    const resolved =
+      await Complaint.countDocuments({
+        assignedOfficer: officerId,
+        status: "resolved",
+      });
+
+    const recentComplaints =
+      await Complaint.find({
+        assignedOfficer: officerId,
+      })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(5);
+
+    return {
+      assigned,
+      pending,
+      inProgress,
+      resolved,
+      recentComplaints,
+    };
+  };
 module.exports = {
   getAssignedComplaintsService,
   startComplaintService,
   resolveComplaintService,
+  getOfficerDashboardService,
 };

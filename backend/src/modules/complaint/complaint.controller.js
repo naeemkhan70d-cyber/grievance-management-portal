@@ -4,6 +4,7 @@ const {
   getComplaintByIdService,
   submitFeedbackService,
   closeComplaintService,
+  getCitizenDashboardService,
 } = require(
   "./complaint.service"
 );
@@ -145,10 +146,32 @@ const submitFeedback =
     }
   };
 
+  const getCitizenDashboard =
+  async (req, res) => {
+    try {
+      const stats =
+        await getCitizenDashboardService(
+          req.user.userId
+        );
+
+      res.status(200).json({
+        success: true,
+        data: stats,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message:
+          error.message,
+      });
+    }
+  };
+
 module.exports = {
   createComplaint,
   getMyComplaints,
   getComplaintById,
   submitFeedback,
   closeComplaint,
+   getCitizenDashboard,
 };

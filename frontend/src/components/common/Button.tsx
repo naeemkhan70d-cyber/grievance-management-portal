@@ -1,4 +1,7 @@
-import type { ReactNode, ButtonHTMLAttributes } from "react";
+import type {
+  ReactNode,
+  ButtonHTMLAttributes,
+} from "react";
 
 interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,27 +18,52 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const variantStyles = {
-    primary:
-      "bg-blue-600 text-white hover:bg-blue-700",
+    primary: `
+      bg-blue-600
+      text-white
+      shadow-sm
+      hover:bg-blue-700
+      hover:shadow-md
+      focus:ring-4
+      focus:ring-blue-100
+    `,
 
-    secondary:
-      "bg-slate-200 text-slate-800 hover:bg-slate-300",
+    secondary: `
+      bg-white
+      border
+      border-slate-300
+      text-slate-700
+      hover:bg-slate-50
+      hover:border-slate-400
+    `,
 
-    danger:
-      "bg-red-600 text-white hover:bg-red-700",
+    danger: `
+      bg-red-600
+      text-white
+      shadow-sm
+      hover:bg-red-700
+      hover:shadow-md
+      focus:ring-4
+      focus:ring-red-100
+    `,
   };
 
   return (
     <button
       className={`
-        rounded-lg
-        px-4
-        py-2
-        font-medium
+        inline-flex
+        items-center
+        justify-center
+        rounded-xl
+        px-5
+        py-2.5
+        text-sm
+        font-semibold
         transition-all
         duration-200
         disabled:cursor-not-allowed
         disabled:opacity-50
+        active:scale-[0.98]
         ${variantStyles[variant]}
         ${fullWidth ? "w-full" : ""}
         ${className}
