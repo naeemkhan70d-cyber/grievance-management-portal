@@ -8,9 +8,8 @@ const {
   getComplaintById,
   submitFeedback,
   closeComplaint,
-} = require(
-  "./complaint.controller"
-);
+  getCitizenDashboard,
+} = require("./complaint.controller");
 
 const authMiddleware =
   require(
@@ -40,6 +39,13 @@ router.get(
 );
 
 router.get(
+  "/dashboard",
+  authMiddleware,
+  roleMiddleware("citizen"),
+  getCitizenDashboard
+);
+
+router.get(
   "/:id",
   authMiddleware,
   roleMiddleware("citizen"),
@@ -53,11 +59,15 @@ router.patch(
   submitFeedback
 );
 
+
+
 router.patch(
   "/:id/close",
   authMiddleware,
   roleMiddleware("citizen"),
   closeComplaint
 );
+
+
 
 module.exports = router;

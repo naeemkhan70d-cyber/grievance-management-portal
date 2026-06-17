@@ -16,6 +16,10 @@ import {
   validateMinLength,
 } from "../../utils/validations";
 
+import {
+  createComplaint,
+} from "../../services/complaintService";
+
 const ComplaintForm = () => {
   const [department, setDepartment] =
     useState("");
@@ -28,7 +32,10 @@ const ComplaintForm = () => {
     setDescription,
   ] = useState("");
 
-  const handleSubmit = (
+  const [loading, setLoading] =
+    useState(false);
+
+  const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
@@ -100,19 +107,32 @@ const ComplaintForm = () => {
       return;
     }
 
-    console.log({
-      department,
-      subject,
-      description,
-    });
+    try {
+      setLoading(true);
 
-    toast.success(
-      "Complaint submitted successfully"
-    );
+      await createComplaint({
+        title: subject,
+        description,
+        category:
+          department,
+      });
 
-    setDepartment("");
-    setSubject("");
-    setDescription("");
+      toast.success(
+        "Complaint submitted successfully"
+      );
+
+      setDepartment("");
+      setSubject("");
+      setDescription("");
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data
+          ?.message ||
+          "Failed to create complaint"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -171,7 +191,9 @@ const ComplaintForm = () => {
           type="submit"
           fullWidth
         >
-          Submit Complaint
+          {loading
+            ? "Submitting..."
+            : "Submit Complaint"}
         </Button>
       </form>
     </div>

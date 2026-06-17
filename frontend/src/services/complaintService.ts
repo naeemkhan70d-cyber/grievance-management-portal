@@ -1,90 +1,57 @@
-import type {
-  Complaint,
-  ComplaintStatus,
-} from "../types/complaint";
+import {
+  createComplaintApi,
+  getMyComplaintsApi,
+} from "../api/complaint.api";
 
-const citizenComplaints: Complaint[] = [
-  {
-    id: "CMP-001",
-    subject: "Road Damage",
-    description:
-      "Road is damaged and needs repair.",
-    citizenName: "Naeem Khan",
-    department: "PWD",
-    status: "Pending",
-    date: "11 Jun 2026",
-  },
-  {
-    id: "CMP-002",
-    subject: "Water Supply Issue",
-    description:
-      "Water supply is irregular.",
-    citizenName: "Naeem Khan",
-    department: "Water Department",
-    status: "Resolved",
-    date: "10 Jun 2026",
-  },
-];
+export const createComplaint =
+  async (data: {
+    title: string;
+    description: string;
+    category: string;
+  }) => {
+    const response =
+      await createComplaintApi(
+        data
+      );
 
-const assignedComplaints: Complaint[] = [
-  {
-    id: "CMP-101",
-    subject: "Road Damage",
-    description:
-      "Road repair required.",
-    citizenName: "Rahul Singh",
-    department: "PWD",
-    status: "Pending",
-    date: "11 Jun 2026",
-  },
-];
-
-const allComplaints: Complaint[] = [
-  ...citizenComplaints,
-  ...assignedComplaints,
-];
-
-export const getCitizenComplaints =
-  (): Complaint[] => {
-    return citizenComplaints;
+    return response.data;
   };
 
-export const getAssignedComplaints =
-  (): Complaint[] => {
-    return assignedComplaints;
-  };
+export const getMyComplaints =
+  async () => {
+    const response =
+      await getMyComplaintsApi();
 
-export const getAllComplaints =
-  (): Complaint[] => {
-    return allComplaints;
-  };
+    return response.data.data.map(
+      (complaint: any) => ({
+        id: complaint._id,
 
-export const getComplaintById = (
-  id: string
-): Complaint | undefined => {
-  return allComplaints.find(
-    (complaint) =>
-      complaint.id === id
-  );
-};
+        title:
+          complaint.title,
 
-export const addComplaint = (
-  complaint: Complaint
-) => {
-  citizenComplaints.push(complaint);
-  allComplaints.push(complaint);
-};
+        description:
+          complaint.description,
 
-export const updateComplaintStatus = (
-  id: string,
-  status: ComplaintStatus
-) => {
-  const complaint =
-    allComplaints.find(
-      (item) => item.id === id
+        category:
+          complaint.category,
+
+        status:
+          complaint.status,
+
+        createdAt:
+          complaint.createdAt,
+
+        assignedOfficer:
+          complaint.assignedOfficer,
+
+        citizen:
+          complaint.citizenId,
+
+        resolutionNote:
+          complaint.resolutionNote,
+
+        resolvedAt:
+          complaint.resolvedAt,
+      })
     );
-
-  if (complaint) {
-    complaint.status = status;
-  }
-};
+  };

@@ -4,6 +4,7 @@ const {
   getAssignedComplaints,
   startComplaint,
   resolveComplaint,
+  getOfficerDashboard,
 } = require(
   "./officer.controller"
 );
@@ -40,6 +41,13 @@ router.patch(
   authMiddleware,
   roleMiddleware("officer"),
   resolveComplaint
+);
+
+router.get(
+  "/dashboard",
+  authMiddleware,
+  roleMiddleware("officer"),
+  getOfficerDashboard
 );
 
 module.exports = router;

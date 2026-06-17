@@ -17,31 +17,55 @@ const { login } = useAuth();
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 
-    const handleLogin = () => {
-  const user = loginUser(email, password);
+const handleLogin = async () => {
+  try {
+    const response =
+      await loginUser(
+        email,
+        password
+      );
 
-  if (!user) {
-    alert("Invalid credentials");
-    return;
-  }
+    const user =
+      response.data.user;
 
-  login(user);
+    const token =
+      response.data.token;
 
-  switch (user.role) {
-    case "citizen":
-      navigate("/citizen/dashboard");
-      break;
+    localStorage.setItem(
+      "token",
+      token
+    );
 
-    case "officer":
-     navigate("/officer/dashboard");
-      break;
+   login(user, token);
 
-    case "admin":
-      navigate("/admin/dashboard");
-      break;
+    switch (user.role) {
+      case "citizen":
+        navigate(
+          "/citizen/dashboard"
+        );
+        break;
 
-    default:
-      navigate("/");
+      case "officer":
+        navigate(
+          "/officer/dashboard"
+        );
+        break;
+
+      case "admin":
+        navigate(
+          "/admin/dashboard"
+        );
+        break;
+
+      default:
+        navigate("/");
+    }
+  } catch (error: any) {
+    alert(
+      error?.response?.data
+        ?.message ||
+        "Login failed"
+    );
   }
 };
   return (

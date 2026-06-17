@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import DataTable from "../../components/common/DataTable";
 import PageHeader from "../../components/common/PageHeader";
@@ -7,7 +10,9 @@ import Modal from "../../components/common/Modal";
 import ComplaintCard from "../../components/complaint/ComplaintCard";
 import StatusBadge from "../../components/complaint/StatusBadge";
 
-import { getCitizenComplaints } from "../../services/complaintService";
+import {
+  getMyComplaints,
+} from "../../services/complaintService";
 
 import useSearch from "../../hooks/useSearch";
 
@@ -15,8 +20,12 @@ import type { Complaint } from "../../types/complaint";
 import type { TableColumn } from "../../types/table";
 
 const MyComplaints = () => {
-  const complaints =
-    getCitizenComplaints();
+  const [
+    complaints,
+    setComplaints,
+  ] = useState<
+    Complaint[]
+  >([]);
 
   const [search, setSearch] =
     useState("");
@@ -31,6 +40,22 @@ const MyComplaints = () => {
   const [isModalOpen, setIsModalOpen] =
     useState(false);
 
+  useEffect(() => {
+    loadComplaints();
+  }, []);
+
+  const loadComplaints =
+    async () => {
+      try {
+        const data =
+          await getMyComplaints();
+
+        setComplaints(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
   const handleViewComplaint = (
     complaint: Complaint
   ) => {
@@ -41,20 +66,14 @@ const MyComplaints = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-
-    setSelectedComplaint(null);
-  };
-
   const filteredComplaints =
     useSearch(
       complaints,
       search,
       [
         "id",
-        "subject",
-        "department",
+        "title",
+        "category",
       ]
     );
 
@@ -65,12 +84,12 @@ const MyComplaints = () => {
         accessor: "id",
       },
       {
-        header: "Subject",
-        accessor: "subject",
+        header: "Title",
+        accessor: "title",
       },
       {
-        header: "Department",
-        accessor: "department",
+        header: "Category",
+        accessor: "category",
       },
       {
         header: "Status",
@@ -86,7 +105,12 @@ const MyComplaints = () => {
       },
       {
         header: "Date",
-        accessor: "date",
+        render: (
+          complaint
+        ) =>
+          new Date(
+            complaint.createdAt
+          ).toLocaleDateString(),
       },
       {
         header: "Action",
@@ -105,7 +129,6 @@ const MyComplaints = () => {
               px-3
               py-2
               text-blue-600
-              transition-all
               hover:bg-blue-100
             "
           >
@@ -134,8 +157,8 @@ const MyComplaints = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={
-          handleCloseModal
+        onClose={() =>
+          setIsModalOpen(false)
         }
         title="Complaint Details"
       >

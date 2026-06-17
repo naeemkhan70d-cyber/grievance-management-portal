@@ -1,28 +1,76 @@
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import toast from "react-hot-toast";
+
 import StatsCard from "../../components/dashboard/StatsCard";
 import RecentComplaints from "../../components/dashboard/RecentComplaints";
 import ComplaintChart from "../../components/dashboard/ComplaintChart";
-
+import type {
+  DashboardStat,
+  RecentComplaint,
+} from "../../types/dashboard";
 import {
-  getOfficerDashboardStats,
-  getRecentOfficerComplaints,
+  getOfficerDashboard,
 } from "../../services/dashboardService";
 
 const Dashboard = () => {
-  const stats = getOfficerDashboardStats();
+const [stats, setStats] =
+  useState<DashboardStat[]>([]);
 
-  const recentComplaints = getRecentOfficerComplaints();
+const [
+  recentComplaints,
+  setRecentComplaints,
+] = useState<RecentComplaint[]>([]);
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard =
+    async () => {
+      try {
+        const data =
+          await getOfficerDashboard();
+
+        setStats(
+          data.stats
+        );
+
+        setRecentComplaints(
+          data.recentComplaints
+        );
+      } catch (error) {
+        console.error(error);
+
+        toast.error(
+          "Failed to load dashboard"
+        );
+      }
+    };
 
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {stats.map((item) => (
-          <StatsCard
-            key={item.title}
-            title={item.title}
-            value={item.value}
-            icon={item.icon}
-          />
-        ))}
+        {stats.map(
+          (item: any) => (
+            <StatsCard
+              key={
+                item.title
+              }
+              title={
+                item.title
+              }
+              value={
+                item.value
+              }
+              icon={
+                item.icon
+              }
+            />
+          )
+        )}
       </div>
 
       <ComplaintChart
@@ -30,9 +78,10 @@ const Dashboard = () => {
       />
 
       <RecentComplaints
-        complaints={recentComplaints}
+        complaints={
+          recentComplaints
+        }
         title="Assigned Work Queue"
-
       />
     </div>
   );
